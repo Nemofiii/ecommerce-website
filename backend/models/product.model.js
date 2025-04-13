@@ -26,8 +26,8 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-},{timestamps: true})
+},{timestamps: true})   //helps to automatically add createdAt and updatedAt fields
 
-const Product = mongoose.model("Product", productSchema)
+const Product = mongoose.model("Product", productSchema) //creating a model
 
 export default Product

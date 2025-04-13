@@ -22,7 +22,7 @@ export const useCartStore = create((set, get) => ({
 		try {
 			const response = await axios.post("/coupons/validate", { code });
 			set({ coupon: response.data, isCouponApplied: true });
-			get().calculateTotals();
+			get().calculateTotals();  // Recalculate totals
 			toast.success("Coupon applied successfully");
 		} catch (error) {
 			toast.error(error.response?.data?.message || "Failed to apply coupon");
@@ -30,7 +30,7 @@ export const useCartStore = create((set, get) => ({
 	},
 	removeCoupon: () => {
 		set({ coupon: null, isCouponApplied: false });
-		get().calculateTotals();
+		get().calculateTotals();  // Recalculate totals
 		toast.success("Coupon removed");
 	},
 
@@ -38,7 +38,7 @@ export const useCartStore = create((set, get) => ({
 		try {
 			const res = await axios.get("/cart");
 			set({ cart: res.data });
-			get().calculateTotals();
+			get().calculateTotals(); // Recalculate totals
 		} catch (error) {
 			set({ cart: [] });
 			toast.error(error.response.data.message || "An error occurred");
@@ -61,7 +61,7 @@ export const useCartStore = create((set, get) => ({
 					: [...prevState.cart, { ...product, quantity: 1 }];
 				return { cart: newCart };
 			});
-			get().calculateTotals();
+			get().calculateTotals();  // Recalculate totals
 		} catch (error) {
 			toast.error(error.response.data.message || "An error occurred");
 		}
@@ -73,7 +73,7 @@ export const useCartStore = create((set, get) => ({
 	},
 	updateQuantity: async (productId, quantity) => {
 		if (quantity === 0) {
-			get().removeFromCart(productId);
+			get().removeFromCart(productId);  // Call removeFromCart if quantity is 0
 			return;
 		}
 
@@ -81,15 +81,15 @@ export const useCartStore = create((set, get) => ({
 		set((prevState) => ({
 			cart: prevState.cart.map((item) => (item._id === productId ? { ...item, quantity } : item)),
 		}));
-		get().calculateTotals();
+		get().calculateTotals();  // Recalculate totals
 	},
 	calculateTotals: () => {
 		const { cart, coupon } = get();
-		const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+		const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);  // Calculate subtotal
 		let total = subtotal;
 
 		if (coupon) {
-			const discount = subtotal * (coupon.discountPercentage / 100);
+			const discount = subtotal * (coupon.discountPercentage / 100);  // Calculate discount
 			total = subtotal - discount;
 		}
 

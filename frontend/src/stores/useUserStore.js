@@ -3,7 +3,7 @@ import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 
 export const useUserStore = create((set, get) => ({
-	user: null,
+	user: null,  // user data
 	loading: false,
 	checkingAuth: true,
 
@@ -11,7 +11,7 @@ export const useUserStore = create((set, get) => ({
 		set({ loading: true });
 
 		if (password !== confirmPassword) {
-			set({ loading: false });
+			set({ loading: false });  // set loading to false
 			return toast.error("Passwords do not match");
 		}
 
@@ -48,7 +48,7 @@ export const useUserStore = create((set, get) => ({
 	checkAuth: async () => {
 		set({ checkingAuth: true });
 		try {
-			const response = await axios.get("/auth/profile");
+			const response = await axios.get("/auth/profile");  // check if user is logged in
 			set({ user: response.data, checkingAuth: false });
 		} catch (error) {
 			console.log(error.message);
@@ -56,7 +56,7 @@ export const useUserStore = create((set, get) => ({
 		}
 	},
 
-	refreshToken: async () => {
+	refreshToken: async () => {  //user will get new access token 
 		// Prevent multiple simultaneous refresh attempts
 		if (get().checkingAuth) return;
 
@@ -77,6 +77,9 @@ export const useUserStore = create((set, get) => ({
 
 // Axios interceptor for token refresh
 
+
+//this part auto-handles expired tokens
+//It ensures you stay logged in if your access token expires by retrying requests after refreshing the token in the background.
 let refreshPromise = null;
 
 axios.interceptors.response.use(

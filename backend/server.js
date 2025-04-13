@@ -34,13 +34,13 @@ app.use("/api/payments", paymentRoutes)
 app.use("/api/analytics", analyticsRoutes)
 
 if(process.env.NODE_ENV === "production"){
-    app.use(express.static(path.join(__dirname,"frontend/dist")));
+    app.use(express.static(path.join(__dirname,"frontend/dist")));  
 
     app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))
+        res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))  
     })
 }
-app.listen(5000, () => {
+app.listen(5000, () => {  //listen to the port, start the server
     console.log("Server is running on http://localhost:" + PORT)
 
     connectDB()

@@ -41,13 +41,13 @@ export const signup = async (req, res) => {
 		if (userExists) {
 			return res.status(400).json({ message: "User already exists" });
 		}
-		const user = await User.create({ name, email, password });
+		const user = await User.create({ name, email, password });  
 
 		// authenticate
-		const { accessToken, refreshToken } = generateTokens(user._id);
+		const { accessToken, refreshToken } = generateTokens(user._id);  // generate access token and refresh token
 		await storeRefreshToken(user._id, refreshToken);
 
-		setCookies(res, accessToken, refreshToken);
+		setCookies(res, accessToken, refreshToken);  // set cookies 
 
 		res.status(201).json({ 
       _id: user._id,
@@ -67,7 +67,7 @@ export const login = async(req,res) => {
 		const user = await User.findOne({ email });
 
 		if (user && (await user.comparePassword(password))) {
-			const { accessToken, refreshToken } = generateTokens(user._id);
+			const { accessToken, refreshToken } = generateTokens(user._id);  // generate access token and refresh token if user exists and password is correct
 			
       await storeRefreshToken(user._id, refreshToken);
 			setCookies(res, accessToken, refreshToken);
@@ -91,12 +91,12 @@ export const logout = async(req,res) => {
   try {
 		const refreshToken = req.cookies.refreshToken;
 		if (refreshToken) {
-			const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-			await redis.del(`refresh_token:${decoded.userId}`);
+			const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);   // verify refresh token 
+			await redis.del(`refresh_token:${decoded.userId}`);   // delete refresh token from redis
 		}
 
-		res.clearCookie("accessToken");
-		res.clearCookie("refreshToken");
+		res.clearCookie("accessToken");   // clear access token cookie
+		res.clearCookie("refreshToken");  // clear refresh token cookie
 		res.json({ message: "Logged out successfully" });
 	} catch (error) {
 		console.log("Error in logout controller", error.message);

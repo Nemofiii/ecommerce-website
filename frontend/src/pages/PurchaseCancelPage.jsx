@@ -2,8 +2,8 @@ import { XCircle, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-const PurchaseCancelPage = () => {
-	return (
+const PurchaseCancelPage = () => {  
+	return (  // This component displays the purchase cancellation page
 		<div className='min-h-screen flex items-center justify-center px-4'>
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}

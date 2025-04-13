@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
 
 //pre-save hook to hash password before saving to database
 userSchema.pre("save", async function (next) {
-    if(!this.isModified("password")) return next();
+    if(!this.isModified("password")) return next();  // if password is not modified, than we don't need to hash it
 
     try {
         const salt = await bcrypt.genSalt(10);

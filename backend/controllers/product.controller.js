@@ -95,10 +95,10 @@ export const getRecommendedProducts = async (req, res) => {
 	try {
 		const products = await Product.aggregate([
 			{
-				$sample: { size: 4 },
+				$sample: { size: 4 },  // get 4 random products
 			},
 			{
-				$project: {
+				$project: {  // project only the required fields
 					_id: 1,
 					name: 1,
 					description: 1,
@@ -116,7 +116,7 @@ export const getRecommendedProducts = async (req, res) => {
 };
 
 export const getProductsByCategory = async (req, res) => {
-	const { category } = req.params;
+	const { category } = req.params;  // destructure category from req.params
 	try {
 		const products = await Product.find({ category });
 		res.json({ products });

@@ -45,7 +45,7 @@ export const useProductStore = create((set) => ({
 		try {
 			await axios.delete(`/products/${productId}`);
 			set((prevProducts) => ({
-				products: prevProducts.products.filter((product) => product._id !== productId),
+				products: prevProducts.products.filter((product) => product._id !== productId),  // filter out the deleted product
 				loading: false,
 			}));
 		} catch (error) {

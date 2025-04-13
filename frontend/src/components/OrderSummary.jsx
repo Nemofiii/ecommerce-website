@@ -12,12 +12,12 @@ const stripePromise = loadStripe(
 const OrderSummary = () => {
 	const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
 
-	const savings = subtotal - total;
+	const savings = subtotal - total;   
 	const formattedSubtotal = subtotal.toFixed(2);
 	const formattedTotal = total.toFixed(2);
 	const formattedSavings = savings.toFixed(2);
 
-	const handlePayment = async () => {
+	const handlePayment = async () => {   // This function will be called when the user clicks the "Pay Now" button
 		const stripe = await stripePromise;
 		const res = await axios.post("/payments/create-checkout-session", {
 			products: cart,
